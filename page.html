@@ -25,7 +25,7 @@
 	</style>
 
 	<script>
-function relUrl(urlstr) {
+function relativeURL(urlstr) {
     var url = new URL(urlstr)
     if (url.search === '') {
         return url.pathname
@@ -36,7 +36,7 @@ function relUrl(urlstr) {
 var parser = new DOMParser()
 
 var categories = []
-function fdata1() {
+function getCategories() {
     fetch('/categories')
         .then(response => response.text())
         .then(body => {
@@ -55,7 +55,7 @@ function fdata1() {
 
 var nextUrl = 'http://www.111avs.net/videos/amateur'
 var videos = { lists: [], pageCur: 0, pageNextUrl: null, pageDes: null }
-function fdata2() {
+function getVideos() {
     fetch(nextUrl)
         .then(response => response.text())
         .then(body => {
@@ -67,7 +67,7 @@ function fdata2() {
             if (pdiv) {
                 videos.pageCur = parseInt(pdiv.querySelector('.active').innerText.trim())
                 videos.pageNextUrl = nextUrl = pdiv.querySelector('.prevnext')?.href ?? null
-                videos.pageNextUrl2 = relUrl(nextUrl)
+                videos.pageNextUrl2 = relativeURL(nextUrl)
             }
 
             htmlDom.querySelectorAll('.col-sm-6.col-md-4.col-lg-4').forEach(item => {
@@ -77,24 +77,22 @@ function fdata2() {
                 }
 
                 var url = item.querySelector('a').href
-                var url2 = relUrl(url)
+                var url2 = relativeURL(url)
                 var id = url2.split('/')[2]
-                var eimg = item.querySelector('.img-responsive')
-                var img =eimg.dataset.original
-                var iid=eimg.id
-                var imgurl2 = relUrl(img)
+                var img = item.querySelector('.img-responsive').dataset.original
+                var imgurl2 = relativeURL(img)
                 var duration = item.querySelector('.duration').innerText.trim()
                 var title = item.querySelector('.video-title').innerText.trim()
                 var added = item.querySelector('.video-added').innerText.trim()
                 var views = item.querySelector('.video-views').innerText.trim()
                 var rating = item.querySelector('.video-rating').innerText.trim()
-                videos.lists.push({ id,iid, url, img, hd, duration, title, added, views, rating })
+                videos.lists.push({ id, url, img, hd, duration, title, added, views, rating })
             })
             console.log(videos.lists.length)
 
             if (nextUrl) {
                 console.log(nextUrl)
-                setTimeout(fdata, 5000)
+                // setTimeout(getVideos, 5000)
             } else {
                 console.log('end')
             }
@@ -104,7 +102,7 @@ function fdata2() {
 
 var videoUrl = '/video/4748/'
 var video = { title: null, des: null, img: null, player: null, tags: [] }
-function fdata3() {
+function getVideo() {
     fetch(videoUrl)
         .then(response => response.text())
         .then(body => {
@@ -129,11 +127,11 @@ function renderHtml(lists) {
     var html = ''
     lists.forEach(item => {
         var tmp = `
-<div class="col-sm-6 col-md-3 col-lg-3">
-<div class="well well-sm m-b-0 m-t-20">
+<div class="col-sm-4 col-md-3 col-lg-3">
+<div class="well well-sm">
 <a href="${item.url}">
 <div class="thumb-overlay">
-<img src="${item.img}" title="${item.title}" alt="${item.title}" id="rotate_${item.id}_20_1" class="img-responsive" />
+<img data-src="${item.img}" src="res/loading...png" title="${item.title}" alt="${item.title}" class="lazyload img-responsive" />
 <div class="hd-text-icon">${item.hd}</div>
 <div class="duration">
 ${item.duration}
@@ -219,81 +217,6 @@ function loadvideo() {
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="row">
-						<div class="col-sm-4 col-md-3 col-lg-3">
-							<div class="well well-sm"> <a href="/video/4884/">
-									<div class="thumb-overlay"> <img
-											data-src="https://img.cache010.com/media/videos/tmb/4884/1.jpg"
-											title="即ハメできちゃうオレ専用メイド - 藤沢えみり 1936" alt="即ハメできちゃうオレ専用メイド - 藤沢えみり 1936"
-											id="rotate_4884_20_1_recent" class="lazyload img-responsive "
-											src="res/loading...png" />
-										<div class="hd-text-icon">HD</div>
-										<div class="duration">
-											01:04:06
-										</div>
-									</div> <span class="video-title title-truncate m-t-5">即ハメできちゃうオレ専用メイド - 藤沢えみり
-										1936</span>
-								</a>
-								<div class="video-added">
-									622 天 之前
-								</div>
-								<div class="video-views pull-left">
-									2920598 人观看 </div>
-								<div class="video-rating pull-right "> <i class="fa fa-heart video-rating-heart "></i>
-									<b>58%</b>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="col-sm-4 col-md-3 col-lg-3">
-							<div class="well well-sm"> <a href="/video/4883/">
-									<div class="thumb-overlay"> <img
-											data-src="https://img.cache010.com/media/videos/tmb/4883/1.jpg"
-											title="性感マッサージで快感！～羽奈美すずの場合～ - 羽奈美すず 1938"
-											alt="性感マッサージで快感！～羽奈美すずの場合～ - 羽奈美すず 1938" id="rotate_4883_20_1_recent"
-											class="lazyload img-responsive " src="res/loading...png" />
-										<div class="hd-text-icon">HD</div>
-										<div class="duration">
-											24:21
-										</div>
-									</div> <span class="video-title title-truncate m-t-5">性感マッサージで快感！～羽奈美すずの場合～ - 羽奈美すず
-										1938</span>
-								</a>
-								<div class="video-added">
-									622 天 之前
-								</div>
-								<div class="video-views pull-left">
-									4757303 人观看 </div>
-								<div class="video-rating pull-right "> <i class="fa fa-heart video-rating-heart "></i>
-									<b>59%</b>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="col-sm-4 col-md-3 col-lg-3">
-							<div class="well well-sm"> <a href="/video/4882/">
-									<div class="thumb-overlay"> <img
-											data-src="https://img.cache010.com/media/videos/tmb/4882/1.jpg"
-											title="ラテンハーフを飼育中！～アナルも開発中です！！～ - 亜美 2039"
-											alt="ラテンハーフを飼育中！～アナルも開発中です！！～ - 亜美 2039" id="rotate_4882_20_1_recent"
-											class="lazyload img-responsive " src="res/loading...png" />
-										<div class="hd-text-icon">HD</div>
-										<div class="duration">
-											01:01:27
-										</div>
-									</div> <span class="video-title title-truncate m-t-5">ラテンハーフを飼育中！～アナルも開発中です！！～ - 亜美
-										2039</span>
-								</a>
-								<div class="video-added">
-									622 天 之前
-								</div>
-								<div class="video-views pull-left">
-									2839774 人观看 </div>
-								<div class="video-rating pull-right "> <i class="fa fa-heart video-rating-heart "></i>
-									<b>69%</b>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
 						<div class="col-sm-4 col-md-3 col-lg-3">
 							<div class="well well-sm"> <a href="/video/4881/">
 									<div class="thumb-overlay"> <img
