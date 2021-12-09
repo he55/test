@@ -157,7 +157,7 @@ ${item.views}
 }
 
 
-function loadvideo() {
+function loadVideo() {
 	var str=renderHtml(videos.lists)
 	var p=document.createElement('p')
 	document.querySelector('.col-sm-12 > .row').appendChild(p)
@@ -217,56 +217,6 @@ function loadvideo() {
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="row">
-						<div class="col-sm-4 col-md-3 col-lg-3">
-							<div class="well well-sm"> <a href="/video/4875/">
-									<div class="thumb-overlay"> <img
-											data-src="https://img.cache010.com/media/videos/tmb/4875/1.jpg"
-											title="千佳のエッチな姿、たくさん見て下さい - 杉山千佳 2088" alt="千佳のエッチな姿、たくさん見て下さい - 杉山千佳 2088"
-											id="rotate_4875_20_1_recent" class="lazyload img-responsive "
-											src="res/loading...png" />
-										<div class="hd-text-icon">HD</div>
-										<div class="duration">
-											59:19
-										</div>
-									</div> <span class="video-title title-truncate m-t-5">千佳のエッチな姿、たくさん見て下さい - 杉山千佳
-										2088</span>
-								</a>
-								<div class="video-added">
-									623 天 之前
-								</div>
-								<div class="video-views pull-left">
-									1675463 人观看 </div>
-								<div class="video-rating pull-right "> <i class="fa fa-heart video-rating-heart "></i>
-									<b>66%</b>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="col-sm-4 col-md-3 col-lg-3">
-							<div class="well well-sm"> <a href="/video/4874/">
-									<div class="thumb-overlay"> <img
-											data-src="https://img.cache010.com/media/videos/tmb/4874/1.jpg"
-											title="やっぱり爆乳が好き！～Iカップを揉みながらイキたい！！～ - 祈里きすみ 1956"
-											alt="やっぱり爆乳が好き！～Iカップを揉みながらイキたい！！～ - 祈里きすみ 1956" id="rotate_4874_20_1_recent"
-											class="lazyload img-responsive " src="res/loading...png" />
-										<div class="hd-text-icon">HD</div>
-										<div class="duration">
-											01:03:20
-										</div>
-									</div> <span class="video-title title-truncate m-t-5">やっぱり爆乳が好き！～Iカップを揉みながらイキたい！！～ -
-										祈里きすみ 1956</span>
-								</a>
-								<div class="video-added">
-									623 天 之前
-								</div>
-								<div class="video-views pull-left">
-									2540220 人观看 </div>
-								<div class="video-rating pull-right "> <i class="fa fa-heart video-rating-heart "></i>
-									<b>67%</b>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -297,7 +247,7 @@ function loadvideo() {
 			idx = 1
 		}
 
-		$('.lazyload').on('mouseover', function (event) {
+		$('body').on('mouseover', '.img-responsive', function (event) {
 			if (timer) {
 				return
 			}
@@ -312,7 +262,7 @@ function loadvideo() {
 				othis.src = `${path}/${idx}.jpg`
 				idx++
 			}, 500)
-		}).on('mouseout', function (event) {
+		}).on('mouseout', '.img-responsive', function (event) {
 			clearTimer()
 			this.src = this.dataset.src
 		})
