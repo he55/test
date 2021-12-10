@@ -218,6 +218,15 @@ function loadVideo() {
 				<div class="col-sm-12">
 					<div class="row">
 					</div>
+					<center>
+						<div class="center_related" style="display: none;  margin: -6px 0 -26px 0;"><img
+								src="/templates/frontend/dark-corai/img/loading-bubbles.svg"></div>
+						<ul class="pager">
+							<li><a href="#prev_related_videos" id="prev_related_videos_4844"
+									style="display: none;">隐藏</a></li>
+							<li><a href="#next_related_videos" id="next_related_videos_4844">显示更多</a></li>
+						</ul>
+					</center>
 				</div>
 			</div>
 		</div>
@@ -239,31 +248,36 @@ function loadVideo() {
 	<script src="http://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
 	<script>
 		var timer
-		var idx = 1
-
-		function clearTimer() {
-			clearInterval(timer)
-			timer = 0
-			idx = 1
-		}
-
+		
 		$('body').on('mouseover', '.img-responsive', function (event) {
 			if (timer) {
 				return
 			}
+
 			var othis = this
+			var src = othis.dataset.src
+			var path = src.substring(0, src.lastIndexOf('/'))
+			var image_urls=[]
+			for (let i = 1; i < 21; i++) {
+				var image_url= `${path}/${i}.jpg`
+				image_urls.push(image_url)
+				var image=new Image()
+				image.src=image_url
+			}
+
+		var idx = 0
 			timer = setInterval(() => {
-				if (idx > 20) {
-					clearTimer()
+				if (idx > 19) {
+					clearInterval(timer)
+			timer = 0
 					return
 				}
-				var src = othis.dataset.src
-				var path = src.substring(0, src.lastIndexOf('/'))
-				othis.src = `${path}/${idx}.jpg`
+				othis.src =image_urls[idx]
 				idx++
 			}, 500)
 		}).on('mouseout', '.img-responsive', function (event) {
-			clearTimer()
+			clearInterval(timer)
+			timer = 0
 			this.src = this.dataset.src
 		})
 	</script>
