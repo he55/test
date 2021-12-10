@@ -95,13 +95,14 @@
 						page.lists.push(obj)
 						videos.push(obj)
 					})
+					console.log(`av: ${videos.length} pv: ${page.lists.length}`)
 
 					if (callback) {
 						callback(page)
 					}
 
 					if (nextPageURL) {
-						console.log(`av: ${videos.length}, pv: ${page.lists.length}, nextPage: ${nextPageURL}`)
+						console.log(`nextPage: ${nextPageURL}`)
 						// setTimeout(getVideos, 5000)
 					} else {
 						console.log('end')
@@ -265,6 +266,9 @@ ${item.views}
 				document.querySelector('.col-sm-12 > .row').appendChild(p)
 				p.outerHTML = str
 				document.querySelector('.center_related').style.display = 'none'
+				if (!nextPageURL) {
+					document.querySelector('.pager').style.display = 'none'
+				}
 			})
 		})
 
