@@ -68,6 +68,7 @@
 					nextPageURL = null
 					var htmlDom = parser.parseFromString(body, 'text/html')
 					page.description = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
+					page.descriptionHTML = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerHTML
 
 					var pdiv = htmlDom.querySelector('.pagination')
 					if (pdiv) {
@@ -135,9 +136,9 @@
 		}
 
 
-		function renderHtml(lists) {
+		function renderHTML(page) {
 			var html = ''
-			lists.forEach(item => {
+			page.lists.forEach(item => {
 				var tmp = `
 <div class="col-sm-4 col-md-3 col-lg-3">
 <div class="well well-sm">
@@ -167,15 +168,14 @@ ${item.views}
 			})
 
 			if (isPart) {
-				var str = `
+				var tmp = `
 <div class="well well-sm">
-	显示 <span class="text-white">1</span> 到 <span class="text-white">14</span> of <span
-		class="text-white">14</span> 课程.
+${page.descriptionHTML}
 </div>
 <div class="row">
 ${html}
 </div>`
-				return str
+				return tmp
 			}
 			return html
 		}
@@ -282,7 +282,7 @@ ${html}
 					document.querySelector('.col-sm-12 > .row').appendChild(p)
 				}
 
-				p.outerHTML = renderHtml(page.lists)
+				p.outerHTML = renderHTML(page)
 				document.querySelector('.center_related').style.display = 'none'
 
 				if (!nextPageURL) {
