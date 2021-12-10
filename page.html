@@ -13,120 +13,123 @@
 	<link href="https://cdn-img.9118bao.com/templates/frontend/dark-corai/css/colors.css" rel="stylesheet">
 	<style>
 		/* fade image in after load */
-.lazyload,
-.lazyloading {
-	opacity: 0;
-}
-.lazyloaded {
-	opacity: 1;
-	transition: opacity 2000ms;
-}
+		.lazyload,
+		.lazyloading {
+			opacity: 0;
+		}
 
+		.lazyloaded {
+			opacity: 1;
+			transition: opacity 2000ms;
+		}
 	</style>
 
 	<script>
-function relativeURL(urlstr) {
-    var url = new URL(urlstr)
-    if (url.search === '') {
-        return url.pathname
-    }
-    return url.pathname + url.search
-}
+		function relativeURL(urlstr) {
+			var url = new URL(urlstr)
+			if (url.search === '') {
+				return url.pathname
+			}
+			return url.pathname + url.search
+		}
 
-var parser = new DOMParser()
+		var parser = new DOMParser()
 
-var categories = []
-function getCategories() {
-    fetch('/categories')
-        .then(response => response.text())
-        .then(body => {
-            var htmlDom = parser.parseFromString(body, 'text/html')
-            htmlDom.querySelectorAll('.col-sm-6.col-md-4.col-lg-4.m-b-20').forEach(item => {
-                var url = item.querySelector('a').href
-                var imgurl = item.querySelector('.img-responsive').src
-                var val1 = item.querySelector('.title-truncate').innerText.trim()
-                var val2 = parseInt(item.querySelector('.badge').innerText.trim())
-                categories.push([url, imgurl, val1, val2])
-            })
-            console.log('end')
-        })
-}
-
-
-var nextUrl = 'http://www.111avs.net/videos/amateur'
-var videos = { lists: [], pageCur: 0, pageNextUrl: null, pageDes: null }
-function getVideos() {
-    fetch(nextUrl)
-        .then(response => response.text())
-        .then(body => {
-            nextUrl = null
-            var htmlDom = parser.parseFromString(body, 'text/html')
-            videos.pageDes = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
-
-            var pdiv = htmlDom.querySelector('.pagination')
-            if (pdiv) {
-                videos.pageCur = parseInt(pdiv.querySelector('.active').innerText.trim())
-                videos.pageNextUrl = nextUrl = pdiv.querySelector('.prevnext')?.href ?? null
-                videos.pageNextUrl2 = relativeURL(nextUrl)
-            }
-
-            htmlDom.querySelectorAll('.col-sm-6.col-md-4.col-lg-4').forEach(item => {
-                var hd = item.querySelector('.hd-text-icon').innerText.trim()
-                if (hd === "AD") {
-                    return
-                }
-
-                var url = item.querySelector('a').href
-                var url2 = relativeURL(url)
-                var id = url2.split('/')[2]
-                var img = item.querySelector('.img-responsive').dataset.original
-                var imgurl2 = relativeURL(img)
-                var duration = item.querySelector('.duration').innerText.trim()
-                var title = item.querySelector('.video-title').innerText.trim()
-                var added = item.querySelector('.video-added').innerText.trim()
-                var views = item.querySelector('.video-views').innerText.trim()
-                var rating = item.querySelector('.video-rating').innerText.trim()
-                videos.lists.push({ id, url, img, hd, duration, title, added, views, rating })
-            })
-            console.log(videos.lists.length)
-
-            if (nextUrl) {
-                console.log(nextUrl)
-                // setTimeout(getVideos, 5000)
-            } else {
-                console.log('end')
-            }
-        })
-}
+		var categories = []
+		function getCategories() {
+			fetch('/categories')
+				.then(response => response.text())
+				.then(body => {
+					var htmlDom = parser.parseFromString(body, 'text/html')
+					htmlDom.querySelectorAll('.col-sm-6.col-md-4.col-lg-4.m-b-20').forEach(item => {
+						var url = item.querySelector('a').href
+						var imgurl = item.querySelector('.img-responsive').src
+						var val1 = item.querySelector('.title-truncate').innerText.trim()
+						var val2 = parseInt(item.querySelector('.badge').innerText.trim())
+						categories.push([url, imgurl, val1, val2])
+					})
+					console.log('end')
+				})
+		}
 
 
-var videoUrl = '/video/4748/'
-var video = { title: null, des: null, img: null, player: null, tags: [] }
-function getVideo() {
-    fetch(videoUrl)
-        .then(response => response.text())
-        .then(body => {
-            var htmlDom = parser.parseFromString(body, 'text/html')
-            video.title = htmlDom.querySelector('.visible-xs.big-title-truncate.m-t-0').innerText.trim()
-            video.des = htmlDom.querySelector('.m-t-10.overflow-hidden').innerText.trim()
-            video.img = htmlDom.querySelector('video').poster
+		var nextUrl = 'http://www.111avs.net/videos/amateur'
+		var videos = { lists: [], pageCur: 0, pageNextUrl: null, pageDes: null }
+		function getVideos() {
+			fetch(nextUrl)
+				.then(response => response.text())
+				.then(body => {
+					nextUrl = null
+					var htmlDom = parser.parseFromString(body, 'text/html')
+					videos.pageDes = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
 
-            var p = document.createElement('p')
-            p.innerHTML = document.querySelector('#video_embed_code').innerText
-            video.player = p.querySelector('iframe').src
+					var pdiv = htmlDom.querySelector('.pagination')
+					if (pdiv) {
+						videos.pageCur = parseInt(pdiv.querySelector('.active').innerText.trim())
+						videos.pageNextUrl = nextUrl = pdiv.querySelector('.prevnext')?.href ?? null
+						videos.pageNextUrl2 = relativeURL(nextUrl)
+					}
 
-            htmlDom.querySelectorAll('.m-t-10.overflow-hidden > a').forEach(item => {
-                video.tags.push(item.innerText.trim())
-            })
-            console.log('end')
-        })
-}
+					var lists = []
+					htmlDom.querySelectorAll('.col-sm-6.col-md-4.col-lg-4').forEach(item => {
+						var hd = item.querySelector('.hd-text-icon').innerText.trim()
+						if (hd === "AD") {
+							return
+						}
+
+						var url = item.querySelector('a').href
+						var url2 = relativeURL(url)
+						var id = url2.split('/')[2]
+						var img = item.querySelector('.img-responsive').dataset.original
+						var imgurl2 = relativeURL(img)
+						var duration = item.querySelector('.duration').innerText.trim()
+						var title = item.querySelector('.video-title').innerText.trim()
+						var added = item.querySelector('.video-added').innerText.trim()
+						var views = item.querySelector('.video-views').innerText.trim()
+						var rating = item.querySelector('.video-rating').innerText.trim()
+						var obj = { id, url, img, hd, duration, title, added, views, rating }
+						lists.push(obj)
+						videos.lists.push(obj)
+					})
+					console.log(videos.lists.length)
+
+					if (nextUrl) {
+						console.log(nextUrl)
+						// setTimeout(getVideos, 5000)
+					} else {
+						console.log('end')
+					}
+				})
+		}
 
 
-function renderHtml(lists) {
-    var html = ''
-    lists.forEach(item => {
-        var tmp = `
+		var videoUrl = '/video/4748/'
+		var video = { title: null, des: null, img: null, player: null, tags: [] }
+		function getVideo() {
+			fetch(videoUrl)
+				.then(response => response.text())
+				.then(body => {
+					var htmlDom = parser.parseFromString(body, 'text/html')
+					video.title = htmlDom.querySelector('.visible-xs.big-title-truncate.m-t-0').innerText.trim()
+					video.des = htmlDom.querySelector('.m-t-10.overflow-hidden').innerText.trim()
+					video.img = htmlDom.querySelector('video').poster
+
+					var p = document.createElement('p')
+					p.innerHTML = document.querySelector('#video_embed_code').innerText
+					video.player = p.querySelector('iframe').src
+
+					htmlDom.querySelectorAll('.m-t-10.overflow-hidden > a').forEach(item => {
+						video.tags.push(item.innerText.trim())
+					})
+					console.log('end')
+				})
+		}
+
+
+		function renderHtml(lists) {
+			var html = ''
+			lists.forEach(item => {
+				var tmp = `
 <div class="col-sm-4 col-md-3 col-lg-3">
 <div class="well well-sm">
 <a href="${item.url}">
@@ -151,18 +154,18 @@ ${item.views}
 <div class="clearfix"></div>
 </div>
 </div>`
-        html += tmp
-    })
-    return html
-}
+				html += tmp
+			})
+			return html
+		}
 
 
-function loadVideo() {
-	var str=renderHtml(videos.lists)
-	var p=document.createElement('p')
-	document.querySelector('.col-sm-12 > .row').appendChild(p)
-	p.outerHTML=str
-}
+		function loadVideo() {
+			var str = renderHtml(videos.lists)
+			var p = document.createElement('p')
+			document.querySelector('.col-sm-12 > .row').appendChild(p)
+			p.outerHTML = str
+		}
 	</script>
 </head>
 
