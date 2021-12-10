@@ -220,7 +220,7 @@ function loadVideo() {
 					</div>
 					<center>
 						<div class="center_related" style="display: none;  margin: -6px 0 -26px 0;"><img
-								src="/templates/frontend/dark-corai/img/loading-bubbles.svg"></div>
+								src="res/loading-bubbles.svg"></div>
 						<ul class="pager">
 							<li><a href="#prev_related_videos" id="prev_related_videos_4844"
 									style="display: none;">隐藏</a></li>
@@ -280,6 +280,20 @@ function loadVideo() {
 			timer = 0
 			this.src = this.dataset.src
 		})
+
+		
+		$("body").on('click', "a[id*='_related_videos_']", function(event) {
+        event.preventDefault();
+
+        $('.center_related').show();
+		// $('.center_related').hide();
+    });
+
+	$("#wrapper").css("padding-bottom", $(".footer-container").height() + "px");
+
+	$( window ).resize(function() {
+	$("#wrapper").css("padding-bottom", $(".footer-container").height() + "px");
+});
 	</script>
 </body>
 
