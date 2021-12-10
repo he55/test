@@ -63,15 +63,15 @@
 			fetch(nextPageURL)
 				.then(response => response.text())
 				.then(body => {
-					var page = { lists: [], pageCur: 0, pageNextUrl: null, pageDes: null }
+					var page = { lists: [], page: 0, nextPageURL: null, description: null }
 					nextPageURL = null
 					var htmlDom = parser.parseFromString(body, 'text/html')
-					page.pageDes = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
+					page.description = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
 
 					var pdiv = htmlDom.querySelector('.pagination')
 					if (pdiv) {
-						page.pageCur = parseInt(pdiv.querySelector('.active').innerText.trim())
-						page.pageNextUrl = nextPageURL = pdiv.querySelector('.prevnext')?.href ?? null
+						page.page = parseInt(pdiv.querySelector('.active').innerText.trim())
+						page.nextPageURL = nextPageURL = pdiv.querySelector('.prevnext')?.href ?? null
 					}
 
 					htmlDom.querySelectorAll('.col-sm-6.col-md-4.col-lg-4').forEach(item => {
@@ -100,9 +100,8 @@
 						callback(page)
 					}
 
-					if (nextUrl) {
-						console.log(videos.lists.length)
-						console.log(nextUrl)
+					if (nextPageURL) {
+						console.log(`av: ${videos.length}, pv: ${page.lists.length}, nextPage: ${nextPageURL}`)
 						// setTimeout(getVideos, 5000)
 					} else {
 						console.log('end')
