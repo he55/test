@@ -25,7 +25,7 @@
 	</style>
 
 	<script>
-		var isPart = false
+		var isPart =true
 		var cdn_url = "https://cdn-img.9118bao.com";
 		var base_url = 'http://www.111avs.net'
 		var tmb_url = "https://img.cache010.com";
@@ -64,7 +64,7 @@
 			fetch(nextPageURL)
 				.then(response => response.text())
 				.then(body => {
-					var page = { lists: [], page: 0, nextPageURL: null, description: null }
+					var page = { lists: [], page: 1, nextPageURL: null, description: null }
 					nextPageURL = null
 					var htmlDom = parser.parseFromString(body, 'text/html')
 					page.description = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
@@ -136,7 +136,7 @@
 		}
 
 
-		function renderHTML(page) {
+		function renderPageHTML(page) {
 			var html = ''
 			page.lists.forEach(item => {
 				var tmp = `
@@ -282,7 +282,7 @@ ${html}
 					document.querySelector('.col-sm-12 > .row').appendChild(p)
 				}
 
-				p.outerHTML = renderHTML(page)
+				p.outerHTML = renderPageHTML(page)
 				document.querySelector('.center_related').style.display = 'none'
 
 				if (!nextPageURL) {
