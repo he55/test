@@ -55,7 +55,7 @@
 
 		var nextUrl = 'http://www.111avs.net/videos/amateur'
 		var videos = { lists: [], pageCur: 0, pageNextUrl: null, pageDes: null }
-		function getVideos() {
+		function getVideos(callback) {
 			fetch(nextUrl)
 				.then(response => response.text())
 				.then(body => {
@@ -91,9 +91,13 @@
 						lists.push(obj)
 						videos.lists.push(obj)
 					})
-					console.log(videos.lists.length)
+
+					if (callback) {
+						callback(lists)
+					}
 
 					if (nextUrl) {
+						console.log(videos.lists.length)
 						console.log(nextUrl)
 						// setTimeout(getVideos, 5000)
 					} else {
@@ -157,14 +161,6 @@ ${item.views}
 				html += tmp
 			})
 			return html
-		}
-
-
-		function loadVideo() {
-			var str = renderHtml(videos.lists)
-			var p = document.createElement('p')
-			document.querySelector('.col-sm-12 > .row').appendChild(p)
-			p.outerHTML = str
 		}
 	</script>
 </head>
@@ -252,9 +248,16 @@ ${item.views}
 			document.querySelector('#wrapper').style.paddingBottom = document.querySelector('.footer-container').clientHeight + 'px'
 		})
 
-		document.querySelector('#load_videos').addEventListener('click', (e) => {
+		document.querySelector('#load_videos').addEventListener('click', e => {
 			e.preventDefault()
 			document.querySelector('.center_related').style.display = ''
+			getVideos(lists => {
+				var str = renderHtml(lists)
+				var p = document.createElement('p')
+				document.querySelector('.col-sm-12 > .row').appendChild(p)
+				p.outerHTML = str
+				document.querySelector('.center_related').style.display = 'none'
+			})
 		})
 
 		var timer
@@ -263,7 +266,8 @@ ${item.views}
 				return
 			}
 
-			var path = this.dataset.src.substring(0, src.lastIndexOf('/'))
+			var data_src = this.dataset.src
+			var path = data_src.substring(0, data_src.lastIndexOf('/'))
 			var image_urls = []
 			for (let i = 1; i < 21; i++) {
 				var image_url = `${path}/${i}.jpg`
