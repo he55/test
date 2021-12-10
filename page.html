@@ -25,6 +25,10 @@
 	</style>
 
 	<script>
+		var cdn_url = "https://cdn-img.9118bao.com";
+		var base_url = 'http://www.111avs.net'
+		var tmb_url = "https://img.cache010.com";
+
 		function relativeURL(urlstr) {
 			var url = new URL(urlstr)
 			if (url.search === '') {
@@ -53,24 +57,23 @@
 		}
 
 
-		var nextUrl = 'http://www.111avs.net/videos/amateur'
-		var videos = { lists: [], pageCur: 0, pageNextUrl: null, pageDes: null }
+		var nextPageURL = 'http://www.111avs.net/videos/amateur'
+		var videos = []
 		function getVideos(callback) {
-			fetch(nextUrl)
+			fetch(nextPageURL)
 				.then(response => response.text())
 				.then(body => {
-					nextUrl = null
+					var page = { lists: [], pageCur: 0, pageNextUrl: null, pageDes: null }
+					nextPageURL = null
 					var htmlDom = parser.parseFromString(body, 'text/html')
-					videos.pageDes = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
+					page.pageDes = htmlDom.querySelector('.col-md-9.col-sm-8 > .well.well-sm').innerText.trim()
 
 					var pdiv = htmlDom.querySelector('.pagination')
 					if (pdiv) {
-						videos.pageCur = parseInt(pdiv.querySelector('.active').innerText.trim())
-						videos.pageNextUrl = nextUrl = pdiv.querySelector('.prevnext')?.href ?? null
-						videos.pageNextUrl2 = relativeURL(nextUrl)
+						page.pageCur = parseInt(pdiv.querySelector('.active').innerText.trim())
+						page.pageNextUrl = nextPageURL = pdiv.querySelector('.prevnext')?.href ?? null
 					}
 
-					var lists = []
 					htmlDom.querySelectorAll('.col-sm-6.col-md-4.col-lg-4').forEach(item => {
 						var hd = item.querySelector('.hd-text-icon').innerText.trim()
 						if (hd === "AD") {
@@ -79,6 +82,7 @@
 
 						var url = item.querySelector('a').href
 						var url2 = relativeURL(url)
+						url = base_url + url2
 						var id = url2.split('/')[2]
 						var img = item.querySelector('.img-responsive').dataset.original
 						var imgurl2 = relativeURL(img)
@@ -88,12 +92,12 @@
 						var views = item.querySelector('.video-views').innerText.trim()
 						var rating = item.querySelector('.video-rating').innerText.trim()
 						var obj = { id, url, img, hd, duration, title, added, views, rating }
-						lists.push(obj)
-						videos.lists.push(obj)
+						page.lists.push(obj)
+						videos.push(obj)
 					})
 
 					if (callback) {
-						callback(lists)
+						callback(page)
 					}
 
 					if (nextUrl) {
@@ -256,8 +260,8 @@ ${item.views}
 		document.querySelector('#load_videos').addEventListener('click', e => {
 			e.preventDefault()
 			document.querySelector('.center_related').style.display = ''
-			getVideos(lists => {
-				var str = renderHtml(lists)
+			getVideos(page => {
+				var str = renderHtml(page.lists)
 				var p = document.createElement('p')
 				document.querySelector('.col-sm-12 > .row').appendChild(p)
 				p.outerHTML = str
@@ -277,8 +281,7 @@ ${item.views}
 			for (let i = 1; i < 21; i++) {
 				var image_url = `${path}/${i}.jpg`
 				image_urls.push(image_url)
-				var image = new Image()
-				image.src = image_url
+				new Image().src = image_url
 			}
 
 			var idx = 0
