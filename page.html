@@ -25,7 +25,7 @@
 	</style>
 
 	<script>
-		var isPart =true
+		var isPart = true
 		var cdn_url = "https://cdn-img.9118bao.com";
 		var base_url = 'http://www.111avs.net'
 		var tmb_url = "https://img.cache010.com";
@@ -221,19 +221,10 @@ ${html}
 	</div>
 	<div id="wrapper">
 		<div class="container">
-			<div class="well well-filters">
-				<div class="pull-left">
-					<h4>最新上传课程</h4>
-				</div>
-				<div class="pull-right"> <a class="btn btn-primary" href="/videos?o=mr"><span class="hidden-xs"><i
-								class="fa fa-plus"></i> 查看更多最新上传课程...</span><span class="visible-xs"><i
-								class="fa fa-plus"></i></span></a> </div>
-				<div class="clearfix"></div>
-			</div>
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="row">
-					</div>
+					<div class="row" id="video_lists1"></div>
+					<div class="row" id="video_lists2"></div>
 					<center>
 						<div class="center_related" style="display: none;  margin: -6px 0 -26px 0;"><img
 								src="res/loading-bubbles.svg"></div>
@@ -261,25 +252,18 @@ ${html}
 	<script src="https://cdn-img.9118bao.com/templates/frontend/dark-corai/js/bootstrap.min.js"></script>
 	<script src="http://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
 	<script>
-		function setFooterSize() {
+		function autoFooterSize() {
 			document.querySelector('#wrapper').style.paddingBottom = document.querySelector('.footer-container').clientHeight + 'px'
 		}
 
-		window.addEventListener('resize', () => {
-			setFooterSize()
-		})
-		setFooterSize()
-
-		document.querySelector('#load_videos').addEventListener('click', e => {
-			e.preventDefault()
+		function loadPage() {
 			document.querySelector('.center_related').style.display = ''
 			getVideos(page => {
 				var p = document.createElement('p')
 				if (isPart) {
-					var c = document.querySelector('center')
-					c.parentNode.insertBefore(p, c)
+					document.querySelector('#video_lists2').appendChild(p)
 				} else {
-					document.querySelector('.col-sm-12 > .row').appendChild(p)
+					document.querySelector('#video_lists1').appendChild(p)
 				}
 
 				p.outerHTML = renderPageHTML(page)
@@ -289,6 +273,23 @@ ${html}
 					document.querySelector('.pager').style.display = 'none'
 				}
 			})
+		}
+
+		function toggleView() {
+			document.querySelector('#video_lists1').innerHTML = ''
+			document.querySelector('#video_lists2').innerHTML = ''
+			isPart = !isPart
+			loadPage()
+		}
+
+		autoFooterSize()
+		window.addEventListener('resize', () => {
+			autoFooterSize()
+		})
+
+		document.querySelector('#load_videos').addEventListener('click', e => {
+			e.preventDefault()
+			loadPage()
 		})
 
 		var timer
