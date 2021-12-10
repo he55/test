@@ -25,6 +25,7 @@
 	</style>
 
 	<script>
+		var isPart = false
 		var cdn_url = "https://cdn-img.9118bao.com";
 		var base_url = 'http://www.111avs.net'
 		var tmb_url = "https://img.cache010.com";
@@ -164,6 +165,18 @@ ${item.views}
 </div>`
 				html += tmp
 			})
+
+			if (isPart) {
+				var str = `
+<div class="well well-sm">
+	显示 <span class="text-white">1</span> 到 <span class="text-white">14</span> of <span
+		class="text-white">14</span> 课程.
+</div>
+<div class="row">
+${html}
+</div>`
+				return str
+			}
 			return html
 		}
 	</script>
@@ -261,11 +274,17 @@ ${item.views}
 			e.preventDefault()
 			document.querySelector('.center_related').style.display = ''
 			getVideos(page => {
-				var str = renderHtml(page.lists)
 				var p = document.createElement('p')
-				document.querySelector('.col-sm-12 > .row').appendChild(p)
-				p.outerHTML = str
+				if (isPart) {
+					var c = document.querySelector('center')
+					c.parentNode.insertBefore(p, c)
+				} else {
+					document.querySelector('.col-sm-12 > .row').appendChild(p)
+				}
+
+				p.outerHTML = renderHtml(page.lists)
 				document.querySelector('.center_related').style.display = 'none'
+
 				if (!nextPageURL) {
 					document.querySelector('.pager').style.display = 'none'
 				}
