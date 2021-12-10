@@ -247,6 +247,11 @@ function loadVideo() {
 	<script src="https://cdn-img.9118bao.com/templates/frontend/dark-corai/js/bootstrap.min.js"></script>
 	<script src="http://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
 	<script>
+		
+window.addEventListener('resize',()=>{
+	document.querySelector('#wrapper').style.paddingBottom=document.querySelector('.footer-container').clientHeight+'px'
+})
+
 		var timer
 		
 		$('body').on('mouseover', '.img-responsive', function (event) {
@@ -282,18 +287,12 @@ function loadVideo() {
 		})
 
 		
-		$("body").on('click', "a[id*='_related_videos_']", function(event) {
+	$("body").on('click', "a[id*='_related_videos_']", function(event) {
         event.preventDefault();
 
         $('.center_related').show();
 		// $('.center_related').hide();
     });
-
-	$("#wrapper").css("padding-bottom", $(".footer-container").height() + "px");
-
-	$( window ).resize(function() {
-	$("#wrapper").css("padding-bottom", $(".footer-container").height() + "px");
-});
 	</script>
 </body>
 
