@@ -244,9 +244,14 @@ ${item.views}
 	<script src="https://cdn-img.9118bao.com/templates/frontend/dark-corai/js/bootstrap.min.js"></script>
 	<script src="http://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
 	<script>
-		window.addEventListener('resize', () => {
+		function setFooterSize() {
 			document.querySelector('#wrapper').style.paddingBottom = document.querySelector('.footer-container').clientHeight + 'px'
+		}
+
+		window.addEventListener('resize', () => {
+			setFooterSize()
 		})
+		setFooterSize()
 
 		document.querySelector('#load_videos').addEventListener('click', e => {
 			e.preventDefault()
