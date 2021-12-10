@@ -222,9 +222,7 @@ function loadVideo() {
 						<div class="center_related" style="display: none;  margin: -6px 0 -26px 0;"><img
 								src="res/loading-bubbles.svg"></div>
 						<ul class="pager">
-							<li><a href="#prev_related_videos" id="prev_related_videos_4844"
-									style="display: none;">隐藏</a></li>
-							<li><a href="#next_related_videos" id="next_related_videos_4844">显示更多</a></li>
+							<li><a href="#" id="load_videos">显示更多</a></li>
 						</ul>
 					</center>
 				</div>
@@ -247,37 +245,39 @@ function loadVideo() {
 	<script src="https://cdn-img.9118bao.com/templates/frontend/dark-corai/js/bootstrap.min.js"></script>
 	<script src="http://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
 	<script>
-		
-window.addEventListener('resize',()=>{
-	document.querySelector('#wrapper').style.paddingBottom=document.querySelector('.footer-container').clientHeight+'px'
-})
+		window.addEventListener('resize', () => {
+			document.querySelector('#wrapper').style.paddingBottom = document.querySelector('.footer-container').clientHeight + 'px'
+		})
+
+		document.querySelector('#load_videos').addEventListener('click', (e) => {
+			e.preventDefault()
+			document.querySelector('.center_related').style.display = ''
+		})
 
 		var timer
-		
 		$('body').on('mouseover', '.img-responsive', function (event) {
 			if (timer) {
 				return
 			}
 
-			var othis = this
-			var src = othis.dataset.src
-			var path = src.substring(0, src.lastIndexOf('/'))
-			var image_urls=[]
+			var path = this.dataset.src.substring(0, src.lastIndexOf('/'))
+			var image_urls = []
 			for (let i = 1; i < 21; i++) {
-				var image_url= `${path}/${i}.jpg`
+				var image_url = `${path}/${i}.jpg`
 				image_urls.push(image_url)
-				var image=new Image()
-				image.src=image_url
+				var image = new Image()
+				image.src = image_url
 			}
 
-		var idx = 0
+			var idx = 0
+			var othis = this
 			timer = setInterval(() => {
 				if (idx > 19) {
 					clearInterval(timer)
-			timer = 0
+					timer = 0
 					return
 				}
-				othis.src =image_urls[idx]
+				othis.src = image_urls[idx]
 				idx++
 			}, 500)
 		}).on('mouseout', '.img-responsive', function (event) {
@@ -285,14 +285,6 @@ window.addEventListener('resize',()=>{
 			timer = 0
 			this.src = this.dataset.src
 		})
-
-		
-	$("body").on('click', "a[id*='_related_videos_']", function(event) {
-        event.preventDefault();
-
-        $('.center_related').show();
-		// $('.center_related').hide();
-    });
 	</script>
 </body>
 
