@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="//mat1.gtimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+	<link href="https://cdn-img.9118bao.com/templates/frontend/dark-corai/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="res/style.css">
+	<link href="https://cdn-img.9118bao.com/templates/frontend/dark-corai/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://cdn-img.9118bao.com/templates/frontend/dark-corai/css/colors.css" rel="stylesheet">
+	<style>
+		/* fade image in after load */
+		.lazyload,
+		.lazyloading {
+			opacity: 0;
+		}
+
+		.lazyloaded {
+			opacity: 1;
+			transition: opacity 2000ms;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-inverse-collapse"> <span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+				<a class="navbar-brand" href="/"><img src="/images/logo/logo.png"></a>
+			</div>
+			<div class="navbar-collapse collapse navbar-inverse-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/videos">课程</a></li>
+					<li class="dropdown visible-sm hidden-xs hidden-md hidden-lg"> <a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">更多 <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/categories">类别</a></li>
+							<li><a href="/community">社区</a></li>
+						</ul>
+					</li>
+					<li class="hidden-sm"><a href="/categories">类别</a></li>
+					<li class="hidden-sm"><a href="/community">社区</a></li>
+					<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+								class="fa fa-search"></i></a>
+						<ul class="dropdown-menu search-dropdown-menu">
+							<form class="form-inline" name="search" id="search_form" method="get"
+								action="/search/videos">
+								<div class="input-group"> <input type="text" class="form-control" placeholder="搜索"
+										name="search_query" id="search_query" value="">
+									<span class="input-group-btn"> <button type="submit" class="btn btn-primary"><i
+												class="fa fa-search"></i></button> </span>
+								</div>
+							</form>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="wrapper">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="row" id="video_lists1"></div>
+					<div class="row" id="video_lists2"></div>
+					<center>
+						<div class="center_related" style="display: none;  margin: -6px 0 -26px 0;"><img
+								src="res/loading-bubbles.svg"></div>
+						<ul class="pager">
+							<li><a href="#" id="load_videos">显示更多</a></li>
+						</ul>
+					</center>
+				</div>
+			</div>
+		</div>
+		<div class="footer-container">
+			<div class="footer">
+				<div class="container">
+					<div class="hidden-xs">
+						<div class="pull-left"> <span>版权所有 &#169; 2019</span> 千百撸
+						</div>
+						<div class="pull-right"> </div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="visible-xs"><span>版权所有 &#169; 2019</span> 千百撸<br /></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn-img.9118bao.com/templates/frontend/dark-corai/js/bootstrap.min.js"></script>
+	<script src="http://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
+	<script src="index.js"></script>
+</body>
+
+</html>
